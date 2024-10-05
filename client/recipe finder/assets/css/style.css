@@ -1,0 +1,153 @@
+
+/* cook.io style.css */
+:root {
+  --primary-color: #ff9800;
+  --secondary-color: #607d8b;
+  --background-color: #fafafa;
+  --text-color: #333;
+  --header-background: #ff6f00;
+  --header-text-color: #fff;
+  --button-hover-color: #e68900;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 85%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header styling */
+header {
+  background-color: var(--header-background);
+  color: var(--header-text-color);
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+nav a {
+  color: var(--header-text-color);
+  margin: 0 15px;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 10px;
+  border-radius: 5px 0 0 5px;
+  border: 1px solid var(--primary-color);
+  font-size: 16px;
+}
+
+.search-bar button {
+  padding: 10px 15px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* Button Styling */
+button {
+  background-color: var(--primary-color);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* Recipes Section */
+section.recipes {
+  margin-top: 40px;
+}
+
+section.recipes h2 {
+  font-size: 28px;
+  color: var(--secondary-color);
+}
+
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.recipe-list .recipe-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: 45%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-item h3 {
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.recipe-item p {
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  header {
+    font-size: 18px;
+    flex-direction: column;
+  }
+
+  nav a {
+    margin: 10px 0;
+  }
+
+  .recipe-list .recipe-item {
+    width: 100%;
+  }
+}
