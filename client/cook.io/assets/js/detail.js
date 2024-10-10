@@ -1,7 +1,6 @@
 /**
- * @license MIT
- * @copyright 2023 codewithsadee
- * @author codewithsadee <mohammadsadee24@gmail.com>
+ * @copyright 2024 Unt_Group19
+ * @author Rohit,Nikitha,Yasaswini,Keerthan,Anuraag <Recipefinderwebapplicationunt@gmail.com>
  */
 
 "use strict";

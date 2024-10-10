@@ -1,15 +1,14 @@
 /**
- * @license MIT
- * @copyright 2023 codewithsadee
- * @author codewithsadee <mohammadsadee24@gmail.com>
+ * @copyright 2024 Unt_Group19
+ * @author Rohit,Nikitha,Yasaswini,Keerthan,Anuraag <Recipefinderwebapplicationunt@gmail.com>
  */
 
 "use strict";
 
 
 window.ACCESS_POINT = "https://api.edamam.com/api/recipes/v2";
-const /** {String} */ APP_ID = "Your APP ID";
-const /** {String} */ API_KEY = "Your APP KEY";
+const /** {String} */ APP_ID = "c86fceb2";
+const /** {String} */ API_KEY = "3d77d764967acc9844bfbfc32c05bc4f";
 const /** {String} */ TYPE = "public";
 
 /**
