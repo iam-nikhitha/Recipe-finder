@@ -57,7 +57,7 @@ router.post("/forgot-password", async (req, res) => {
       service: "gmail",
       auth: {
         user: "recipefinderwebapplicationunt@gmail.com",
-        pass: "btol wjwh bgev dwwa",
+        pass: "jena rbwk gbju hmqb",
       },
     });
     const encodedToken = encodeURIComponent(token).replace(/\./g, "%2E");
