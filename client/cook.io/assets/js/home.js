@@ -1,6 +1,11 @@
 /**
+<<<<<<< HEAD
  * @copyright 2024 Unt_Group19
  * @author Rohit,Nikitha,Yasaswini,Keerthan,Anuraag <Recipefinderwebapplicationunt@gmail.com>
+=======
+ * @copyright 2024 UNT_Group19
+ * @author Rohit,yasaswini,Nikitha,Anuraag,Keerthan <Recipefinderwebapplicationunt@gmail.com>
+>>>>>>> 896ebb5b398c0e74c50b3bf79c5c0f933c4bd780
  */
 "use strict";
 
