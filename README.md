@@ -9,6 +9,8 @@ Recipe Finder is a web application that allows users to search, save, and share 
 - Save favorite recipes
 - Share recipes with others
 - Dark/Light mode for enhanced UI
+- 
+   NOTE - This is still a work in progress 
 
 ## Installation
 
