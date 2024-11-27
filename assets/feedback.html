@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Page</title>
+    <style>
+        /* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    color: #f0a500;
+}
+
+/* Main Section Styling */
+main {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Form Section */
+form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f8ff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: #555;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Render Comments Section */
+#render-comments ul {
+    list-style: none;
+    padding: 0;
+}
+
+#render-comments li {
+    background-color: #fafafa;
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+#render-comments li:first-child {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+#render-comments li:last-child {
+    color: #666;
+}
+
+.dark-mode{
+          background-color: black;
+          color: black;
+        }
+        .light-mode{
+          background-color: white;
+          color: black;
+        }
+
+/* Media Queries */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-container {
+        flex-direction: column;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    button {
+        padding: 10px;
+    }
+}
+
+    </style>
+</head>
+<body class="dark-mode">
+    <header>
+        <section class="nav-container">
+          <h1 class="logo">RECIPE FINDER</h1>
+           
+          <nav>
+            <ul>
+              <!-- nav uses ID's to take the user to that section of the page -->
+              <li><a href="./Auth/register.html">Register</a></li>
+              <li><a href="./Auth/login.html">Login</a></li>
+              <li><a href="./index.html">Recipe Finder</a></li>
+              <!-- <li><a href="#recipe-history">Previous Recipes</a></li> -->
+              <li><a href="./customize.html">Customize Recipes</a></li>
+              <li><a href="./new-recipe.html">New Recipes</a></li>
+              <li><a href="./feedback.html">Feedback</a></li>
+              <li><a href="./calender.html">Calender</a></li>
+              <li><a href="./mail.html">Send Mail</a></li>
+              <li><a href="./Auth/register.html" id="logoutBtn">Logout</a></li>
+            </ul>
+          </nav>
+        </section>
+      </header>
+    <main>
+        <section>
+            <form id="comment-form">
+                <label for="name">Name</label>
+                <input type="text" id="name" class="name" placeholder="Name" required />
+                <br/>
+                <label for="feedback">Feedback:</label>
+                <textarea id="feedback" name="feedback" rows="4" required></textarea>
+                <br/>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <br/>
+
+        <section id="render-comments">
+
+        </section>
+    </main>
+
+
+
+    <script>
+
+        const form = document.getElementById("comment-form");
+        const userTheme = localStorage.getItem("mode")
+      console.log(userTheme)
+      var body = document.querySelector('body')
+
+      body.classList.add(userTheme)
+
+        const name = document.getElementById("name");
+        const feedback = document.getElementById("feedback");
+
+        form.addEventListener("submit",userFeedback);
+
+        function userFeedback(e){
+            e.preventDefault();
+
+            fetch("http://localhost:5000/api/user/feedback",{
+                method : "POST",
+                headers : {
+                    'Content-Type' : "application/json"
+                },
+                body : JSON.stringify({
+                    name : name.value,
+                    feedback : feedback.value
+                })
+            })
+            .then(async (res)=>{
+                const feedbacks = await res.json();
+                console.log(feedbacks)
+                if(res){
+                    console.log(res);
+                    getAllFeedback();
+                    name.value = "";
+                    feedback.value = "";
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
+
+        function getAllFeedback(){
+            fetch("http://localhost:5000/api/user/",{
+                method : "GET"
+            })
+            .then(async (res)=>{
+                const userComments = await res.json();
+                console.log(userComments)
+                if(res){
+                    console.log(res)
+                    renderUserComments(userComments);
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
+
+        getAllFeedback();
+
+
+        function renderUserComments(comments){
+            const renderComments = comments;
+            console.log(renderComments)
+            const renderSection = document.getElementById("render-comments");
+            
+            let commentsHtml = "";
+
+            for(let i=0;i<=renderComments.length-1;i++){
+                commentsHtml += 
+                `
+                <ul>
+                <li>Name : ${renderComments[i].name}</li>
+                <li>Feedback : ${renderComments[i].feedback}</li>
+                </ul>
+                `
+            }
+
+            renderSection.innerHTML= commentsHtml;
+        }
+
+
+        function checkAuth() {
+        const token = localStorage.getItem('accessToken');
+        const loginLink = document.querySelector('a[href="./Auth/login.html"]');
+        const registerLink = document.querySelector('a[href="./Auth/register.html"]');
+        const index = document.querySelector('a[href="./index.html"]')
+        const customize = document.querySelector('a[href="./customize.html"]')
+        const new_recipe = document.querySelector('a[href="./new-recipe.html"]')
+        const feedback = document.querySelector('a[href="./feedback.html"]')
+        const calender = document.querySelector('a[href="./calender.html"]')
+        const mail = document.querySelector('a[href="./mail.html"]')
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (token) {
+            loginLink.style.display = 'none'; 
+            registerLink.style.display = 'none'; 
+            index.style.display = "block";
+            customize.style.display = "block";
+            new_recipe.style.display = "block";
+            feedback.style.display = "block";
+            calender.style.display = "block";
+            mail.style.display = "block";
+            logoutBtn.style.display = 'block'; 
+           
+        } else {
+            loginLink.style.display = 'block'; 
+            registerLink.style.display = 'block'; 
+            index.style.display = "none";
+            customize.style.display = "none";
+            new_recipe.style.display = "none";
+            feedback.style.display = "none";
+            calender.style.display = "none";
+            mail.style.display = "none";
+            logoutBtn.style.display = 'none'; 
+        }
+        }
+
+        function logout() {
+        localStorage.removeItem('accessToken');
+        checkAuth();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        checkAuth();
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+        });
+
+    </script>
+</body>
+</html>

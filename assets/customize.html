@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Recipe</title>
+    <style>
+        /* General Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    max-height: 50%;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+header {
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    color: #f0a500;
+}
+/* Form Section Styles */
+#advanced-filter h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: #ff6f61;
+}
+
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ingredient {
+    margin-bottom: 15px;
+}
+
+.ingredient label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ingredient input[type="text"],
+.ingredient input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.ingredient input[type="text"]:focus,
+.ingredient input[type="number"]:focus {
+    border-color: #ff6f61;
+}
+
+.ingredient label input[type="radio"],
+.ingredient label input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.ingredient label input {
+    margin-right: 5px;
+}
+
+/* Button Styles */
+.button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button button {
+    padding: 12px 20px;
+    background-color: #ff6f61;
+    border: none;
+    color: white;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button button:hover {
+    background-color: #e55c50;
+}
+
+        .dark-mode{
+          background-color: black;
+          color: black;
+        }
+        .light-mode{
+          background-color: white;
+          color: black;
+        }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    .ingredient input[type="text"],
+    .ingredient input[type="number"] {
+        padding: 8px;
+    }
+
+    .button {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button button {
+        width: 100%;
+    }
+}
+
+    </style>
+</head>
+<body class="dark-mode">
+
+<div class="container">
+    <header>
+        <section class="nav-container">
+          <h1 class="logo">RECIPE FINDER</h1>
+           
+          <nav>
+            <ul>
+              <!-- nav uses ID's to take the user to that section of the page -->
+              <li><a href="./Auth/register.html">Register</a></li>
+              <li><a href="./Auth/login.html">Login</a></li>
+              <li><a href="./index.html">Recipe Finder</a></li>
+              <!-- <li><a href="#recipe-history">Previous Recipes</a></li> -->
+              <li><a href="./customize.html">Customize Recipes</a></li>
+              <li><a href="./new-recipe.html">New Recipes</a></li>
+              <li><a href="./feedback.html">Feedback</a></li>
+              <li><a href="./calender.html">Calender</a></li>
+              <li><a href="./mail.html">Send Mail</a></li>
+              <li><a href="./Auth/register.html" id="logoutBtn">Logout</a></li>
+            </ul>
+          </nav>
+        </section>
+      </header>
+
+    <section id="advanced-filter">
+        <div class="container">
+          <!-- <button class="dark">dark</button> -->
+          <h1>Customize Your Recipe</h1>
+      
+          <form id="recipeForm">
+              <div class="ingredient">
+                  <label for="ingredient1">Ingredient 1:</label>
+                  <input type="text" id="ingredient1" name="ingredient1" required>
+              </div>
+      
+              <div class="ingredient">
+                  <label for="servingSize">Serving Size:</label>
+                  <input type="number" id="servingSize" name="ingredient1" name="servingSize" min="1" required>
+              </div>
+      
+              <div class="ingredient">
+                  <label>Cooking Method:</label>
+                  <label><input type="radio" class="cookingMethod" name="ingredient1" value="baking" > Baking</label>
+                  <label><input type="radio" class="cookingMethod" name="ingredient1" value="grilling" > Grilling</label>
+                  <label><input type="radio" class="cookingMethod" name="ingredient1" value="boiling"> Boiling</label>
+              </div>
+      
+              <div class="ingredient">
+                  <label>Flavor Profile:</label>
+                  <label><input type="checkbox" class="flavor" name="ingredient1" value="spicy" > Spicy</label>
+                  <label><input type="checkbox" class="flavor" name="ingredient1" value="sweet" > Sweet</label>
+                  <label><input type="checkbox" class="flavor" name="ingredient1" value="savory"> Savory</label>
+              </div>
+      
+              <div class="ingredient">
+                  <label>Allergens:</label>
+                  <label><input type="checkbox" class="allergen" name="ingredient1" value="nuts" > Nuts</label>
+                  <label><input type="checkbox" class="allergen" name="ingredient1" value="dairy"> Dairy</label>
+              </div>
+      
+              <div class="ingredient">
+                  <label for="prepTime">Preparation Time (minutes):</label>
+                  <input type="number" id="prepTime" name="ingredient1" min="1">
+              </div>
+      
+              <div class="ingredient">
+                  <label>Add-Ons:</label>
+                  <label><input type="checkbox" class="ingredient1" name="addOn" value="sauce" > Sauce</label>
+                  <label><input type="checkbox" class="ingredient1" name="addOn" value="garnish" > Garnish</label>
+              </div>
+      
+              <div class="button">
+                  <button type="submit" id="submit">Save Recipe</button>
+                  <button type="button" id="reset">Cancel</button>
+              </div>
+          </form>
+          <br/>
+      </div>
+      </section>
+</div>
+
+
+
+<script>
+
+    const container = document.querySelector('.container');
+    const userTheme = localStorage.getItem("mode")
+      console.log(userTheme)
+      var body = document.querySelector('body')
+
+      body.classList.add(userTheme)
+
+    let youtubeAPIKey = "AIzaSyB7n9rKXwh5RoIn3mnR9i-auGoOMy9NOIU";
+
+    const ingredient1 = document.getElementById("ingredient1");
+    const servingSize = document.getElementById('servingSize');
+    const cookingMethod = document.querySelectorAll('.cookingMethod');
+    const flavors = document.querySelectorAll('.flavor');
+    const allergens = document.querySelectorAll('.allergen');
+    const prepTime = document.getElementById('prepTime');
+    const addOns = document.querySelectorAll('.addOn');
+
+    const submit = document.getElementById('submit');
+
+
+    function selectedIncredients(e){
+        e.preventDefault();
+
+        let incredient = ingredient1.value;
+        let size = servingSize.value;
+        let cookMethod = Array.from(cookingMethod).find(cooking => cooking.checked)?.value || '';
+        let flavor = Array.from(flavors).find(flavor => flavor.checked)?.value || '';
+        let allergen = Array.from(allergens).find(allergen => allergen.checked)?.value || '';
+        let time = prepTime.value;
+        let addon = Array.from(addOns).find(addon => addon.checked)?.value || '';
+
+        const allIncredientsUserCustomized = 
+        (incredient + '+' + size + '+' + cookMethod + '+' + flavor + '+' + allergen + '+' + time + '+' + addon + '+' + 'tutorial');
+
+        console.log(allIncredientsUserCustomized);
+
+        const encodedQuery = encodeURIComponent(allIncredientsUserCustomized);
+        console.log(encodedQuery)
+        const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${encodedQuery}&key=${youtubeAPIKey}`;
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok: ' + res.statusText);
+            }
+            return res.json();
+        })
+        .then(data => customizedVideos(data.items))
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
+    }
+
+    submit.addEventListener('click',(e)=>selectedIncredients(e))
+
+    var customizedRecipeVideoId;
+    var customizedRecipeUrl;
+
+    function customizedVideos(videosData){
+
+        if(videosData){
+        ingredient1.value = "";
+        servingSize.value = "";
+        Array.from(cookingMethod).some(cooking => cooking.checked ? cooking.checked.value = "" : cooking.checked );
+        Array.from(flavors).find(flavor => flavor.checked ? !flavor.checked : flavor.checked);
+        Array.from(allergens).find(allergen => allergen.checked ? !allergen.checked : allergen.checked);
+        prepTime.value = "";
+        Array.from(addOns).find(addon => addon.checked ? !addon.checked : addon.checked);
+        }
+
+        let videoId = videosData.forEach((video)=>{
+            if(video.id === undefined){
+                return;
+            }else{
+                customizedRecipeVideoId = video.id.videoId
+            }
+        })
+
+        console.log(customizedRecipeVideoId)
+        
+        const div = document.createElement('div');
+
+        div.innerHTML = 
+        `
+        <iframe 
+        src="https://www.youtube.com/embed/${customizedRecipeVideoId} "
+        width="100%" 
+        height="450" 
+        style="border:0;background-color: black;" 
+        allowfullscreen>
+        </iframe>
+        `
+
+        container.appendChild(div)
+        console.log(div)
+
+    }
+
+    function checkAuth() {
+        const token = localStorage.getItem('accessToken');
+        const loginLink = document.querySelector('a[href="./Auth/login.html"]');
+        const registerLink = document.querySelector('a[href="./Auth/register.html"]');
+        const index = document.querySelector('a[href="./index.html"]')
+        const customize = document.querySelector('a[href="./customize.html"]')
+        const new_recipe = document.querySelector('a[href="./new-recipe.html"]')
+        const feedback = document.querySelector('a[href="./feedback.html"]')
+        const calender = document.querySelector('a[href="./calender.html"]')
+        const mail = document.querySelector('a[href="./mail.html"]')
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (token) {
+            loginLink.style.display = 'none'; 
+            registerLink.style.display = 'none'; 
+            index.style.display = "block";
+            customize.style.display = "block";
+            new_recipe.style.display = "block";
+            feedback.style.display = "block";
+            calender.style.display = "block";
+            mail.style.display = "block";
+            logoutBtn.style.display = 'block'; 
+           
+        } else {
+            loginLink.style.display = 'block'; 
+            registerLink.style.display = 'block'; 
+            index.style.display = "none";
+            customize.style.display = "none";
+            new_recipe.style.display = "none";
+            feedback.style.display = "none";
+            calender.style.display = "none";
+            mail.style.display = "none";
+            logoutBtn.style.display = 'none'; 
+        }
+        }
+
+        function logout() {
+        localStorage.removeItem('accessToken');
+        checkAuth();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        checkAuth();
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+        });
+
+
+
+</script>
+</body>
+</html>

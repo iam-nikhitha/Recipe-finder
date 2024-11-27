@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calendar with Notes</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            transition: background 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .calendar-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #prev, #next {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #prev:hover, #next:hover {
+            background-color: #45a049;
+        }
+
+        #monthYear {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .day {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            background: #f9f9f9;
+            transition: background 0.3s;
+        }
+
+        .day:hover {
+            background: #e7f7e7;
+            cursor: pointer;
+        }
+
+        .day.selected {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .day-number {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .notes {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 120px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #reminderMessage {
+            margin-top: 10px;
+            color: #4CAF50;
+        }
+        .dark-mode{
+          background-color: black;
+          color: black;
+        }
+        .light-mode{
+          background-color: white;
+          color: black;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <header>
+        <section class="nav-container">
+          <h1 class="logo">RECIPE FINDER</h1>
+           
+          <nav>
+            <ul>
+              <!-- nav uses ID's to take the user to that section of the page -->
+              <li><a href="./Auth/register.html">Register</a></li>
+              <li><a href="./Auth/login.html">Login</a></li>
+              <li><a href="./index.html">Recipe Finder</a></li>
+              <!-- <li><a href="#recipe-history">Previous Recipes</a></li> -->
+              <li><a href="./customize.html">Customize Recipes</a></li>
+              <li><a href="./new-recipe.html">New Recipes</a></li>
+              <li><a href="./feedback.html">Feedback</a></li>
+              <li><a href="./calender.html">Calender</a></li>
+              <li><a href="./mail.html">Send Mail</a></li>
+              <li><a href="./Auth/register.html" id="logoutBtn">Logout</a></li>
+            </ul>
+          </nav>
+        </section>
+      </header>
+    <div class="calendar-container">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+        <h2 id="monthYear"></h2>
+        <div id="calendar" class="calendar"></div>
+        <div>
+            <input type="text" id="noteInput" placeholder="Enter your note here">
+            <button id="addNote">Add Note</button>
+        </div>
+        <div id="reminderMessage" style="margin-top: 10px;"></div>
+    </div>
+    <!-- <script src="script.js"></script> -->
+     <script>
+        const userTheme = localStorage.getItem("mode");
+        const storedNotes = JSON.parse(localStorage.getItem("userNotes")) || {};  
+        let notes = { ...storedNotes };  
+
+        
+        var body = document.querySelector('body');
+        body.classList.add(userTheme);
+
+        
+        const calendar = document.getElementById('calendar');
+        const monthYear = document.getElementById('monthYear');
+        const noteInput = document.getElementById('noteInput');
+        const addNoteButton = document.getElementById('addNote');
+        let currentDate = new Date();
+
+        
+        function renderCalendar(date) {
+            calendar.innerHTML = '';
+            monthYear.innerText = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+            const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            const totalDays = lastDay.getDate();
+            const startDay = firstDay.getDay();
+
+            const currentDate = new Date().getDate();
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+
+            let currentDay = `${currentYear}-${currentMonth+1}-${currentDate}`;
+
+            for (let i = 0; i < startDay; i++) {
+                calendar.innerHTML += '<div class="day empty"></div>';
+            }
+
+            let calendarHtml = '';
+            for (let day = 1; day <= totalDays; day++) {
+                const dateKey = `${date.getFullYear()}-${date.getMonth() + 1}-${day}`;
+                const dayNotes = notes[dateKey] || [];  
+
+                const liveDate = dateKey === currentDay ? 
+                    `<span class="day-number" style="background-color:blue; color:white; border-radius:50%;padding:5px">${day}</span>` : 
+                    `<span class="day-number">${day}</span>`;
+
+                const renderedNotes = dayNotes.map(val => val).join('') || "";
+
+                if (dateKey === currentDay) {
+                const userEmail = localStorage.getItem("userEmail");
+                if (userEmail) {
+                    if (renderedNotes !== "") {
+                        sendEmailReminder(userEmail, dateKey, renderedNotes)
+                    };
+                }
+            }
+
+
+                calendarHtml += `
+                    <div style="overflow:scroll" class="day" data-date="${dateKey}">
+                        ${liveDate}
+                        <div>${renderedNotes}</div>
+                    </div>`;
+            }
+
+            calendar.innerHTML = calendarHtml;
+        }
+
+        function sendEmailReminder(userEmail, dateKey, notes) {
+            fetch('http://localhost:5000/api/user/recipe/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                to: userEmail,
+                subject: `Reminder for ${dateKey}`,
+                message: `Here are your notes for ${dateKey}: ${notes}`,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Reminder email sent successfully.');
+            } else {
+                console.log('Failed to send email reminder.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        }
+
+        
+        document.getElementById('prev').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar(currentDate);
+        });
+
+        
+        document.getElementById('next').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar(currentDate);
+        });
+
+        
+        addNoteButton.addEventListener('click', () => {
+            const selectedDay = document.querySelector('.day.selected');
+            if (!selectedDay) {
+                alert('Please select a date to add a note.');
+                return;
+            }
+            const dateKey = selectedDay.getAttribute('data-date');
+            const note = noteInput.value.trim();
+            if (note) {
+                if (!notes[dateKey]) {
+                    notes[dateKey] = [];
+                }
+                notes[dateKey].push(note);
+
+                
+                localStorage.setItem("userNotes", JSON.stringify(notes));
+
+                noteInput.value = '';
+                renderCalendar(currentDate);  
+            }
+        });
+
+        
+        calendar.addEventListener('click', (e) => {
+            if (e.target.classList.contains('day-number')) {
+                const dayElement = e.target.parentElement;
+                document.querySelectorAll('.day').forEach(day => day.classList.remove('selected'));
+                dayElement.classList.add('selected');
+            }
+        });
+
+        
+        renderCalendar(currentDate);
+
+
+        function checkAuth() {
+        const token = localStorage.getItem('accessToken');
+        const loginLink = document.querySelector('a[href="./Auth/login.html"]');
+        const registerLink = document.querySelector('a[href="./Auth/register.html"]');
+        const index = document.querySelector('a[href="./index.html"]')
+        const customize = document.querySelector('a[href="./customize.html"]')
+        const new_recipe = document.querySelector('a[href="./new-recipe.html"]')
+        const feedback = document.querySelector('a[href="./feedback.html"]')
+        const calender = document.querySelector('a[href="./calender.html"]')
+        const mail = document.querySelector('a[href="./mail.html"]')
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (token) {
+            loginLink.style.display = 'none'; 
+            registerLink.style.display = 'none'; 
+            index.style.display = "block";
+            customize.style.display = "block";
+            new_recipe.style.display = "block";
+            feedback.style.display = "block";
+            calender.style.display = "block";
+            mail.style.display = "block";
+            logoutBtn.style.display = 'block'; 
+           
+        } else {
+            loginLink.style.display = 'block'; 
+            registerLink.style.display = 'block'; 
+            index.style.display = "none";
+            customize.style.display = "none";
+            new_recipe.style.display = "none";
+            feedback.style.display = "none";
+            calender.style.display = "none";
+            mail.style.display = "none";
+            logoutBtn.style.display = 'none'; 
+        }
+        }
+
+        function logout() {
+        localStorage.removeItem('accessToken');
+        checkAuth();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        checkAuth();
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+        });
+
+
+     </script>
+</body>
+</html>

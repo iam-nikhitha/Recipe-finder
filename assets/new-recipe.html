@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Recipes</title>
+    <style>
+        /* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main Container */
+#container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styling */
+header {
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    color: #f0a500;
+}
+/* Form Section */
+form {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f8ff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+input[type="file"] {
+    padding: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Recipe Display Section */
+#render-data ul {
+    list-style: none;
+    padding: 0;
+}
+
+#render-data li {
+    background-color: #fafafa;
+    border: 1px solid #e1e1e1;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#render-data li img {
+    max-width: 100px;
+    border-radius: 10px;
+}
+
+.recipe-info {
+    flex-grow: 1;
+    padding-left: 20px;
+}
+
+.recipe-info h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.recipe-info p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333333;
+    color: white;
+    margin-top: 30px;
+    border-radius: 0 0 15px 15px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.dark-mode{
+          background-color: black;
+          color: black;
+        }
+        .light-mode{
+          background-color: white;
+          color: black;
+        }
+
+    </style>
+</head>
+<body class="dark-mode">
+    <header>
+        <section class="nav-container">
+          <h1 class="logo">RECIPE FINDER</h1>
+           
+          <nav>
+            <ul>
+              <!-- nav uses ID's to take the user to that section of the page -->
+              <li><a href="./Auth/register.html">Register</a></li>
+              <li><a href="./Auth/login.html">Login</a></li>
+              <li><a href="./index.html">Recipe Finder</a></li>
+              <!-- <li><a href="#recipe-history">Previous Recipes</a></li> -->
+              <li><a href="./customize.html">Customize Recipes</a></li>
+              <li><a href="./new-recipe.html">New Recipes</a></li>
+              <li><a href="./feedback.html">Feedback</a></li>
+              <li><a href="./calender.html">Calender</a></li>
+              <li><a href="./mail.html">Send Mail</a></li>
+              <li><a href="./Auth/register.html" id="logoutBtn">Logout</a></li>
+            </ul>
+          </nav>
+        </section>
+      </header>
+    <main id="container">
+        <section id="add-new-recipe">
+            <form id="recipeForm" method="post" >
+                <h2>Add Your Recipe</h2>
+            
+                <label for="dishName">Name of the Dish:</label>
+                <input type="text" id="dishName" name="dishName" required>
+                <br/>
+                <label for="calories">Calories:</label>
+                <input type="number" id="calories" name="calories" required>
+                <br/>
+                <label for="prepTime">Preparation Time (minutes):</label>
+                <input type="number" id="prepTime" name="prepTime" required>
+                <br/>
+                <label for="cookTime">Cooking Time (minutes):</label>
+                <input type="number" id="cookTime" name="cookTime" required>
+                <br/>
+                <label for="servings">Number of Servings:</label>
+                <input type="number" id="servings" name="servings" required>
+                <br/>
+                <label for="ingredient1">Ingredient 1:</label>
+                <input type="text" id="ingredient1" name="ingredient1" required>
+                <br/>
+                <label for="ingredient2">Ingredient 2:</label>
+                <input type="text" id="ingredient2" name="ingredient2" required>
+                <br/>
+                <label for="ingredient3">Ingredient 3:</label>
+                <input type="text" id="ingredient3" name="ingredient3" required>
+                <br/>
+                <label for="ingredient4">Ingredient 4:</label>
+                <input type="text" id="ingredient4" name="ingredient4" required>
+                <br/>
+                <label for="ingredient5">Ingredient 5:</label>
+                <input type="text" id="ingredient5" name="ingredient5">
+                <br/>
+                <label for="instructions">Instructions:</label>
+                <textarea id="instructions" name="instructions" rows="4" required></textarea>
+                <br/>
+                <label for="cuisine">Cuisine Type:</label>
+                <input type="text" id="cuisine" name="cuisine">
+                <br/>
+                <label for="dietaryRestrictions">Dietary Restrictions:</label>
+                <input type="text" id="dietaryRestrictions" name="dietaryRestrictions">
+                <br/>
+                <label for="imageURL">Image:</label>
+                <input type="file" id="imageURL" name="imageURL">
+                <br/>
+                <label for="notes">Additional Notes:</label>
+                <textarea id="notes" name="notes" rows="2"></textarea>
+                <br/>
+                <button type="submit" id="recipe-submit">Submit Recipe</button>
+            </form>
+        </section>
+
+        <br/>
+
+        <section id="render-data">
+        
+        </section>
+        
+    </main>
+
+
+    <script>
+
+        const recipeForm = document.getElementById("recipeForm");
+        const userTheme = localStorage.getItem("mode")
+      console.log(userTheme)
+      var body = document.querySelector('body')
+
+      body.classList.add(userTheme)
+
+        const dishName = document.getElementById("dishName");
+        const calories = document.getElementById("calories");
+        const prepTime = document.getElementById("prepTime");
+        const cookTime = document.getElementById("cookTime");
+        const servings = document.getElementById("servings");
+        const ingredient1 = document.getElementById("ingredient1");
+        const ingredient2 = document.getElementById("ingredient2");
+        const ingredient3 = document.getElementById("ingredient3");
+        const ingredient4 = document.getElementById("ingredient4");
+        const ingredient5 = document.getElementById("ingredient5");
+        const instructions = document.getElementById("instructions");
+        const cuisine = document.getElementById("cuisine");
+        const dietaryRestrictions = document.getElementById("dietaryRestrictions");
+        const imageURL = document.getElementById("imageURL");
+        const notes = document.getElementById("notes");
+
+
+        recipeForm.addEventListener("submit",addRecipe);
+
+        function addRecipe(e){
+            e.preventDefault();
+
+            let newRecipe = {
+                dishname : dishName.value,
+                calories : calories.value,
+                preptime : prepTime.value,
+                cooktime : cookTime.value,
+                servings : servings.value,
+                ingredient1 : ingredient1.value,
+                ingredient2 : ingredient2.value,
+                ingredient3 : ingredient3.value,
+                ingredient4 : ingredient4.value,
+                ingredient5 : ingredient5.value,
+                instructions : instructions.value,
+                cuisine : cuisine.value,
+                dietary : dietaryRestrictions.value,
+                file : imageURL.files[0].name,
+                notes : notes.value
+            }
+
+
+            console.log(newRecipe)
+            
+            fetch("http://localhost:5000/api/recipe/new/recipe",{
+                method : "POST",
+                headers : {
+                    'Content-Type' : "application/json"
+                },
+                body : JSON.stringify(newRecipe)
+            })
+            .then((res)=>{
+                if(res){
+                console.log(res);
+                getAllRecipes();
+                dishName.value = "";
+                calories.value = "";
+                prepTime.value = "";
+                cookTime.value = "";
+                servings.value = "";
+                ingredient1.value = "";
+                ingredient2.value = "";
+                ingredient3.value = "";
+                ingredient4.value = "";
+                ingredient5.value = "";
+                instructions.value = "";
+                cuisine.value = "";
+                dietaryRestrictions.value = "";
+                imageURL.value = "";
+                notes.value = "";
+                }
+            })
+        }
+        
+
+        function getAllRecipes(){
+            
+            fetch("http://localhost:5000/api/recipe/",{
+                method : "GET"
+            })
+            .then(async (res)=>{
+                const recipeData = await res.json();
+                console.log(recipeData)
+                if(res){
+                    // console.log(res)
+                    renderRecipeDatas(recipeData);
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
+
+        getAllRecipes()
+
+        function renderRecipeDatas(data){
+            const renderData = data;
+            console.log(renderData)
+            const renderSection = document.getElementById("render-data");
+
+            const ul = document.createElement("ul");
+            
+            let recipeHtml = ""
+
+           for(let i=0;i<=renderData.length-1;i++){
+            recipeHtml+=
+            `
+                <li><img src="./images/${renderData[i].file}" width="100px" height="100px" alt="Loading..."/></li>
+                <li>Dish-Name : ${renderData[i].dishname}</li>
+                <li>Calories : ${renderData[i].calories}</li>
+                <li>Prep-Time : ${renderData[i].preptime}</li>
+                <li>Cook-Time : ${renderData[i].cooktime}</li>
+                <li>Servings : ${renderData[i].servings}</li>
+                <li>Ingredient-1 : ${renderData[i].ingredient1}</li>
+                <li>Ingredient-2 : ${renderData[i].ingredient2}</li>
+                <li>Ingredient-3 : ${renderData[i].ingredient3}</li>
+                <li>Ingredient-4 : ${renderData[i].ingredient4}</li>
+                <li>Ingredient-5 : ${renderData[i].ingredient5}</li>
+                <li>Instructions : ${renderData[i].instructions}</li>
+                <li>Cuisine : ${renderData[i].cuisine}</li>
+                <li>Diet-Restrict : ${renderData[i].dietary}</li>
+                <li>Notes : ${renderData[i].notes}</li>
+                <button data-recipe='${JSON.stringify(renderData[i])}' onclick="editRecipe(this.dataset.recipe)">Edit</button>
+                <br/>
+                <button onclick="deleteRecipe('${renderData[i]._id}')">Delete</button>
+                <br/>
+                <a href="./mail.html"><button data-share='${JSON.stringify(renderData[i])}' onclick="mailRecipe(this.dataset.share)">Share Recipe</button></a>
+            `
+           }
+
+        //    console.log(recipeHtml)
+        ul.innerHTML = recipeHtml;
+        renderSection.append(ul)
+        }
+
+
+        function mailRecipe(shareRecipe){
+           JSON.stringify(localStorage.setItem("share-recipe", shareRecipe));
+        }
+
+        const recipeSubmit = document.getElementById("recipe-submit");
+
+        let updateRecipeHandler; 
+
+        function editRecipe(editData) {
+            const data = JSON.parse(editData);
+            recipeSubmit.innerText = "Update";
+            
+            dishName.value = data.dishname;
+            calories.value = data.calories;
+            prepTime.value = data.preptime;
+            cookTime.value = data.cooktime;
+            servings.value = data.servings;
+            ingredient1.value = data.ingredient1;
+            ingredient2.value = data.ingredient2;
+            ingredient3.value = data.ingredient3;
+            ingredient4.value = data.ingredient4;
+            ingredient5.value = data.ingredient5;
+            instructions.value = data.instructions;
+            cuisine.value = data.cuisine;
+            dietaryRestrictions.value = data.dietary;
+            imageURL.textContent = data.file; 
+            notes.value = data.notes;
+
+            updateRecipeHandler = () => {
+                if (recipeSubmit.innerText === "Update") {
+                    let editRecipe = {
+                        dishname: dishName.value,
+                        calories: calories.value,
+                        preptime: prepTime.value,
+                        cooktime: cookTime.value,
+                        servings: servings.value,
+                        ingredient1: ingredient1.value,
+                        ingredient2: ingredient2.value,
+                        ingredient3: ingredient3.value,
+                        ingredient4: ingredient4.value,
+                        ingredient5: ingredient5.value,
+                        instructions: instructions.value,
+                        cuisine: cuisine.value,
+                        dietary: dietaryRestrictions.value,
+                        file: imageURL.files[0]?.name,
+                        notes: notes.value
+                    };
+
+                    updateRecipe(data._id, editRecipe);
+                }
+            };
+
+            if (recipeSubmit.onclick) {
+                recipeSubmit.removeEventListener("click", updateRecipeHandler);
+            }
+            
+            recipeSubmit.addEventListener("click", updateRecipeHandler);
+        }
+
+        function updateRecipe(id, editData) {
+            fetch(`http://localhost:5000/api/recipe/${id}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify(editData)
+            })
+            .then((res) => {
+                return res.json();
+            })
+            .then((recipeData) => {
+                renderRecipeDatas(recipeData); 
+                recipeSubmit.innerText = "Submit Recipe"; 
+            })
+            .catch((err) => console.log(err));
+        }
+
+
+
+
+        function deleteRecipe(id){
+            console.log("from delete func",id);
+
+            try {
+                fetch(`http://localhost:5000/api/recipe/${id}`,{
+                method : "DELETE",
+            })
+            .then((res)=>{
+                console.log(res);
+                getAllRecipes();
+            })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        function checkAuth() {
+        const token = localStorage.getItem('accessToken');
+        const loginLink = document.querySelector('a[href="./Auth/login.html"]');
+        const registerLink = document.querySelector('a[href="./Auth/register.html"]');
+        const index = document.querySelector('a[href="./index.html"]')
+        const customize = document.querySelector('a[href="./customize.html"]')
+        const new_recipe = document.querySelector('a[href="./new-recipe.html"]')
+        const feedback = document.querySelector('a[href="./feedback.html"]')
+        const calender = document.querySelector('a[href="./calender.html"]')
+        const mail = document.querySelector('a[href="./mail.html"]')
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (token) {
+            loginLink.style.display = 'none'; 
+            registerLink.style.display = 'none'; 
+            index.style.display = "block";
+            customize.style.display = "block";
+            new_recipe.style.display = "block";
+            feedback.style.display = "block";
+            calender.style.display = "block";
+            mail.style.display = "block";
+            logoutBtn.style.display = 'block'; 
+           
+        } else {
+            loginLink.style.display = 'block'; 
+            registerLink.style.display = 'block'; 
+            index.style.display = "none";
+            customize.style.display = "none";
+            new_recipe.style.display = "none";
+            feedback.style.display = "none";
+            calender.style.display = "none";
+            mail.style.display = "none";
+            logoutBtn.style.display = 'none'; 
+        }
+        }
+
+        function logout() {
+        localStorage.removeItem('accessToken');
+        checkAuth();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        checkAuth();
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+        });
+
+
+    </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Styling */
+header {
+    background-color: #2c3e50;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    color: #e74c3c;
+}
+
+/* Main Section */
+main {
+    width: 90%;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+label {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #34495e;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1abc9c;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-container {
+        flex-direction: column;
+    }
+
+    main {
+        width: 95%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <section class="nav-container">
+          <h1 class="logo">RECIPE FINDER</h1>
+           
+          <nav>
+            <ul>
+              <!-- nav uses ID's to take the user to that section of the page -->
+              <li><a href="./register.html">Register</a></li>
+              <li><a href="./login.html">Login</a></li>
+              <li><a href="../index.html">Recipe Finder</a></li>
+              <!-- <li><a href="#recipe-history">Previous Recipes</a></li> -->
+              <li><a href="../customize.html">Customize Recipes</a></li>
+              <li><a href="../new-recipe.html">New Recipes</a></li>
+              <li><a href="../feedback.html">Feedback</a></li>
+              <li><a href="../calender.html">Calender</a></li>
+              <li><a href="../mail.html">Send Mail</a></li>
+              <li><a href="./register.html" id="logoutBtn">Logout</a></li>
+            </ul>
+          </nav>
+        </section>
+    </header>
+    <main>
+        <form id="form">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="email" id="email" placeholder="Email" />
+            <br/>
+            <label for="password">Password</label>
+            <input type="password" name="password" class="password" id="password" placeholder="Password" />
+            <br/>
+            <button type="button" id="button">Submit</button>
+        </form>
+    </main>
+
+
+    <script>
+
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+
+        const btn = document.getElementById("button");
+
+        btn.addEventListener("click",userDetails);
+
+        function userDetails(e){
+            e.preventDefault();
+
+            let userPassword;
+
+            if(password.type === "password"){
+                password.type = "number"
+                userPassword = password.value
+                password.type = "password"
+            }
+
+            const data = {
+                email : email.value,
+                password : userPassword
+            }
+
+            fetch("http://localhost:5000/api/auth/login",
+                {
+                    method : "POST",
+                    headers : {
+                        'Content-Type': 'application/json',
+                    },
+                    body : JSON.stringify(data)
+                }
+            )
+            .then(async (res)=> {
+                const userData = await res.json();
+                localStorage.setItem("accessToken",userData.accessToken);
+                localStorage.setItem("userEmail",userData.email)
+                if(res){
+                    // console.log(res);
+                    window.location.href = "../index.html"
+                    email.value = "";
+                    password.value = "";
+                }
+            })
+            .catch((err)=>console.log(err))
+        }
+        
+       
+        function checkAuth() {
+        const token = localStorage.getItem('accessToken');
+        const loginLink = document.querySelector('a[href="./login.html"]');
+        const registerLink = document.querySelector('a[href="./register.html"]');
+        const index = document.querySelector('a[href="../index.html"]')
+        const customize = document.querySelector('a[href="../customize.html"]')
+        const new_recipe = document.querySelector('a[href="../new-recipe.html"]')
+        const feedback = document.querySelector('a[href="../feedback.html"]')
+        const calender = document.querySelector('a[href="../calender.html"]')
+        const mail = document.querySelector('a[href="../mail.html"]')
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (token) {
+            loginLink.style.display = 'none'; 
+            registerLink.style.display = 'none'; 
+            index.style.display = "block";
+            customize.style.display = "block";
+            new_recipe.style.display = "block";
+            feedback.style.display = "block";
+            calender.style.display = "block";
+            mail.style.display = "block";
+            logoutBtn.style.display = 'block'; 
+           
+        } else {
+            loginLink.style.display = 'block'; 
+            registerLink.style.display = 'block'; 
+            index.style.display = "none";
+            customize.style.display = "none";
+            new_recipe.style.display = "none";
+            feedback.style.display = "none";
+            calender.style.display = "none";
+            mail.style.display = "none";
+            logoutBtn.style.display = 'none'; 
+        }
+        }
+
+        function logout() {
+        localStorage.removeItem('accessToken');
+        checkAuth();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        checkAuth();
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+        });
+
+
+
+    </script>
+    
+</body>
+</html>
